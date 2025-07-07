@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: celmade_dashboard_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: celmade_root_password
+      MYSQL_DATABASE: celmade_db
+      MYSQL_USER: celmade_user
+      MYSQL_PASSWORD: celmade_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database_schema_sorting_optimized.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql_config:/etc/mysql/conf.d
+    networks:
+      - celmade_network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pcelmade_root_password"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: celmade_dashboard_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: celmade_root_password
+      MYSQL_ROOT_PASSWORD: celmade_root_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - celmade_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  celmade_network:
+    driver: bridge 
