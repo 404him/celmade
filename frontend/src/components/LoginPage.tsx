@@ -54,42 +54,14 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    // 테스트 계정 체크
-    if (data.username === 'admin' && data.password === 'admin123') {
-      // 테스트용 사용자 정보
-      const testUser = {
-        idx: 1,
-        username: 'admin',
-        name: 'Super Admin',
-        role: 'SUPER_ADMIN' as const,
-        email: 'admin@celmade.com',
-        isActive: true,
-        lastLoginAt: new Date().toISOString(),
-        createdAt: new Date().toISOString()
-      };
-
-      // 테스트용 토큰
-      const testToken = 'test_token_' + Date.now();
-      
-      // 로컬 스토리지에 저장
-      authService.setAuthData(testToken, testUser);
-      
-      // 대시보드로 이동
-      navigate('/dashboard');
-      return;
-    }
-
     try {
-      const response = await authService.login(data);
+      await authService.login(data);
       
-      if (response.success && response.token && response.user) {
-        authService.setAuthData(response.token, response.user);
-        navigate('/dashboard');
-      } else {
-        setError(response.message || '로그인에 실패했습니다.');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : '로그인에 실패했습니다.');
+      // 로그인 성공 시 대시보드로 이동
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : '로그인에 실패했습니다.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -113,7 +85,7 @@ const LoginPage: React.FC = () => {
           <Typography variant="body1" className="text-gray-600">
             관리자 로그인
           </Typography>
-        </div>
+        </div> 
 
         {/* 로그인 카드 */}
         <Card className="shadow-xl border-0">

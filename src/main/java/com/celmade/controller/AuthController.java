@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.celmade.dto.LoginRequest;
 import com.celmade.dto.LoginResponse;
 import com.celmade.entity.User;
+import com.celmade.security.JwtUtil;
 import com.celmade.service.UserService;
 
 @RestController
@@ -17,7 +18,8 @@ import com.celmade.service.UserService;
 public class AuthController {
     @Autowired
     private UserService userService;
-    // @Autowired private JwtUtil jwtUtil; // JWT 유틸은 추후 추가
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -25,8 +27,7 @@ public class AuthController {
         if (user == null || !userService.checkPassword(user, request.getPassword())) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
-        // String token = jwtUtil.generateToken(user); // JWT 발급(추후)
-        String token = "dummy-jwt-token"; // 임시 토큰
+        String token = jwtUtil.generateToken(user);
         return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getRole()));
     }
 } 
