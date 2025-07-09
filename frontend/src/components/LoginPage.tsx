@@ -54,6 +54,31 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
+    // 테스트 계정 체크
+    if (data.username === 'admin' && data.password === 'admin123') {
+      // 테스트용 사용자 정보
+      const testUser = {
+        idx: 1,
+        username: 'admin',
+        name: 'Super Admin',
+        role: 'SUPER_ADMIN' as const,
+        email: 'admin@celmade.com',
+        isActive: true,
+        lastLoginAt: new Date().toISOString(),
+        createdAt: new Date().toISOString()
+      };
+
+      // 테스트용 토큰
+      const testToken = 'test_token_' + Date.now();
+      
+      // 로컬 스토리지에 저장
+      authService.setAuthData(testToken, testUser);
+      
+      // 대시보드로 이동
+      navigate('/dashboard');
+      return;
+    }
+
     try {
       const response = await authService.login(data);
       
@@ -171,8 +196,11 @@ const LoginPage: React.FC = () => {
 
             {/* 추가 정보 */}
             <Box className="mt-6 text-center">
-              <Typography variant="body2" className="text-gray-500">
+              <Typography variant="body2" className="text-gray-500 mb-2">
                 쇼피파이 & 워드프레스 통합 관리 시스템
+              </Typography>
+              <Typography variant="caption" className="text-gray-400">
+                테스트 계정: admin / admin123
               </Typography>
             </Box>
           </CardContent>

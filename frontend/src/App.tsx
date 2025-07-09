@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import LoginPage from './components/LoginPage';
+import DashboardPage from './components/dashboard/DashboardPage';
 import './index.css';
 
 // React Query 클라이언트 생성
@@ -59,22 +60,6 @@ const theme = createTheme({
     },
   },
 });
-
-// 임시 대시보드 컴포넌트 (나중에 실제 대시보드로 교체)
-const DashboardPage = () => (
-  <div className="min-h-screen bg-gray-50 p-8">
-    <div className="max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
-        Celmade Dashboard
-      </h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <p className="text-gray-600">
-          대시보드 페이지가 준비 중입니다. 로그인 기능이 정상적으로 작동합니다!
-        </p>
-      </div>
-    </div>
-  </div>
-);
 
 // 인증 상태 확인 함수
 const isAuthenticated = (): boolean => {
