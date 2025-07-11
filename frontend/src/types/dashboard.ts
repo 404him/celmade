@@ -27,6 +27,8 @@ export interface RecentOrder {
   platform: 'shopify' | 'wordpress';
 }
 
+
+
 // 재고 현황
 export interface StockItem {
   id: string;

@@ -11,10 +11,9 @@ services:
       MYSQL_USER: celmade_user
       MYSQL_PASSWORD: celmade_password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./database_schema_sorting_optimized.sql:/docker-entrypoint-initdb.d/init.sql
       - ./mysql_config:/etc/mysql/conf.d
     networks:
       - celmade_network

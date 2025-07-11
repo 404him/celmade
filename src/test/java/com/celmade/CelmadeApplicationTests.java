@@ -1,4 +1,4 @@
-package com.example.celmade;
+package com.celmade;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

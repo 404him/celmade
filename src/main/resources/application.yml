@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/celmade_db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3307/celmade_db?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: root
+    password: celmade_root_password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -10,20 +10,14 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
   sql:
     init:
-      mode: always
-      data-locations: classpath:data.sql
-  security:
-    user:
-      name: admin
-      password: admin123
+      mode: never
 
 server:
-  port: 8080
+  port: 8081
 
 logging:
   level:

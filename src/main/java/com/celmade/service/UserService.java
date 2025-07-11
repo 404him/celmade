@@ -3,10 +3,12 @@ package com.celmade.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
 import com.celmade.entity.User;
 import com.celmade.repository.UserRepository;
 
+@Slf4j
 @Service
 public class UserService {
     @Autowired
@@ -15,10 +17,16 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        User user = userRepository.findByUsername(username).orElse(null);
+        log.info("Found user: {}", user != null ? user.getUsername() : "null");
+        return user;
     }
 
     public boolean checkPassword(User user, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, user.getPassword());
+        boolean matches = passwordEncoder.matches(rawPassword, user.getPassword());
+        log.info("Password check for user {}: {}", user.getUsername(), matches);
+        log.info("Raw password: {}", rawPassword);
+        log.info("Encoded password: {}", user.getPassword());
+        return matches;
     }
 } 
